@@ -11,16 +11,60 @@
 
 <body>
     <div id="app">
-        <meu-componente></meu-componente>
+        <meu-componente v-bind:atributo="valorAtributo"></meu-componente>
+
+        <input type="text" v-model="valorAtributo">
+
+        <componente-tabela v-bind:titulos="titulos" v-bind:registros="registros"></componente-tabela>
+
+        <p v-once>{{valorAtributo}}</p>
+
+        <p v-html="html"></p>
+
+        <p>{{ 24.4684654 | TrataValor }}</p>
+
     </div>
 
     <script type="text/javascript">
         Vue.component('meu-componente', {
-            template:'<h2>titulo criado no template</h2>'
+            props: ['atributo'],
+            template: '<h2>{{ atributo }}</h2>'
         });
-    
+
+        Vue.component('componente-tabela', {
+            props: ['titulos', 'registros'],
+            template:
+                '<table>' +
+                '<thead>' +
+                '<tr>' +
+                '<th v-for="titulo in titulos">{{ titulo }}</th>' +
+                '</tr>' +
+                '</thead>' +
+                '<tbody>' +
+                '<tr v-for="registro in registros">' +
+                '<td v-for="item in registro">{{item}}</td>' +
+                '</tr>' +
+                '</tbody>' +
+                '</table>'
+        });
+
         var app = new Vue({
             el: "#app",
+            data: {
+                valorAtributo: 'parametro passado para a variavel',
+                titulos: ['Nome', 'Email', 'Telefone'],
+                registros: [
+                    { titulo: 'Titulo 1', descricao: 'Descrição 1' },
+                    { titulo: 'Titulo 2', descricao: 'Descrição 2', link:'link2' },
+                    { titulo: 'Titulo 3', descricao: 'Descrição 3' }
+                ],
+                html:'<a href="#">Link</a>'
+            },
+            filters: {
+                TrataValor: function(valor) {
+                    return ('R$ '+(valor).toFixed(2)).replace('.', ',')
+                }
+            }
         });
 
     </script>
