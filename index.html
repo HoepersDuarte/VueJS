@@ -34,6 +34,11 @@
 
         <p>contaMethods: {{contaMethods}}</p>
         <p>contaComputed: {{contaComputed}}</p>
+
+        <p>
+            <input type="text" v-model="nome" placeholder="Nome">
+        </p>
+        <p>Alterações: {{contaAlteracao}}</p>
         
     </div>
 
@@ -73,6 +78,8 @@
                 html: '<a href="#">Link</a>',
                 contaMethods:0,
                 contaComputed:0,
+                nome: '',
+                contaAlteracao:0,
             },
             filters: {
                 TrataValor: function (valor) {
@@ -81,7 +88,7 @@
             },
             methods: {
                 totalValorMetodo: function() {
-                    this.contaMethods++;
+                    //this.contaMethods++;
                     var total = 0;
                     for (item of this.registros) {
                         total += item.valor;
@@ -97,6 +104,12 @@
                         total += item.valor;
                     }
                     return total;
+                }
+            },
+            watch: {
+                nome:function(valor){
+                    this.contaAlteracao++;
+                    this.nome = valor.toUpperCase();
                 }
             }
         });
